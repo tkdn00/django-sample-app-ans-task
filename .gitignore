@@ -1,5 +1,0 @@
-*.tfstate
-*.tfstate*
-.terraform/
-.terraform.tftate.lock.hcl.info
-*.tfvars
