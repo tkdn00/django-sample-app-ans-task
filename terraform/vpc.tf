@@ -33,7 +33,7 @@ resource "aws_subnet" "public2" {
 resource "aws_subnet" "private1" {
   vpc_id            = aws_vpc.django_app_vpc.id
   cidr_block        = "10.1.50.0/24"
-  availability_zone = data.aws_availability_zones.available_zone.names[2]
+  availability_zone = data.aws_availability_zones.available_zone.names[0]
   tags = {
     Name = "Private subnet 1"
   }
@@ -43,7 +43,7 @@ resource "aws_subnet" "private1" {
 resource "aws_subnet" "private2" {
   vpc_id            = aws_vpc.django_app_vpc.id
   cidr_block        = "10.1.60.0/24"
-  availability_zone = data.aws_availability_zones.available_zone.names[3]
+  availability_zone = data.aws_availability_zones.available_zone.names[1]
   tags = {
     Name = "Private subnet 2"
   }
@@ -56,6 +56,43 @@ resource "aws_internet_gateway" "djangoapp_igw" {
     Name = "Internet gateway for djangoapp"
 
   }
+}
+
+resource "aws_eip" "nat_gateway1" {
+  domain = "vpc"
+}
+
+
+resource "aws_nat_gateway" "djangoapp_gateway1" {
+  allocation_id = aws_eip.nat_gateway1.id
+  subnet_id     = aws_subnet.public1.id
+  tags = {
+    Name = "NAT Gateway 1"
+  }
+  depends_on = [aws_internet_gateway.djangoapp_igw]
+
+
+}
+
+resource "aws_route_table" "private_rt" {
+  vpc_id = aws_vpc.django_app_vpc.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.djangoapp_gateway1.id
+
+  }
+}
+
+resource "aws_route_table_association" "private1_rt_association" {
+  subnet_id      = aws_subnet.private1.id
+  route_table_id = aws_route_table.private_rt.id
+
+}
+
+resource "aws_route_table_association" "private2_rt_association" {
+  subnet_id      = aws_subnet.private2.id
+  route_table_id = aws_route_table.private_rt.id
+
 }
 
 resource "aws_route_table" "public_rt" {
@@ -77,6 +114,9 @@ resource "aws_route_table_association" "public2_rt_association" {
   route_table_id = aws_route_table.public_rt.id
 
 }
+
+
+
 
 resource "aws_security_group" "alb_sg" {
   name        = "djangoapp-alb-sg"
