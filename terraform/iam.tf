@@ -21,7 +21,7 @@ resource "aws_iam_role_policy_attachment" "ssm_role_ec2_attach" {
 }
 
 resource "aws_iam_instance_profile" "ssm_instance_profile" {
-    name = "django-app-ssm-profile"
-    role = aws_iam_role.ssm_role_ec2.name
+  name = "django-app-ssm-profile"
+  role = aws_iam_role.ssm_role_ec2.name
 
 }

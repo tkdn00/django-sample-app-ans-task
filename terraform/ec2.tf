@@ -19,37 +19,37 @@ data "aws_ami" "djangoapp_ami" {
 }
 
 resource "aws_instance" "app_instance1" {
-    ami = data.aws_ami.djangoapp_ami.id
-    instance_type = "t3.micro"
-    iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
-    subnet_id = aws_subnet.private1.id
-    vpc_security_group_ids = [aws_security_group.app_instance_sg.id]
+  ami                    = data.aws_ami.djangoapp_ami.id
+  instance_type          = "t3.micro"
+  iam_instance_profile   = aws_iam_instance_profile.ssm_instance_profile.name
+  subnet_id              = aws_subnet.private1.id
+  vpc_security_group_ids = [aws_security_group.app_instance_sg.id]
 
-    tags = {
-      Name = "App instance 1"
-    }
+  tags = {
+    Name = "App instance 1"
+  }
 }
 
 resource "aws_instance" "app_instance2" {
-    ami = data.aws_ami.djangoapp_ami.id
-    instance_type = "t3.micro"
-    iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
-    subnet_id = aws_subnet.private2.id
-    vpc_security_group_ids = [aws_security_group.app_instance_sg.id]
+  ami                    = data.aws_ami.djangoapp_ami.id
+  instance_type          = "t3.micro"
+  iam_instance_profile   = aws_iam_instance_profile.ssm_instance_profile.name
+  subnet_id              = aws_subnet.private2.id
+  vpc_security_group_ids = [aws_security_group.app_instance_sg.id]
 
-    tags = {
-      Name = "App instance 2"
-    }
+  tags = {
+    Name = "App instance 2"
+  }
 }
 
 resource "aws_instance" "db_instance" {
-    ami = data.aws_ami.djangoapp_ami.id
-    instance_type = "t3.micro"
-    iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
-    subnet_id = aws_subnet.private2.id
-    vpc_security_group_ids = [aws_security_group.db_sg.id]
+  ami                    = data.aws_ami.djangoapp_ami.id
+  instance_type          = "t3.micro"
+  iam_instance_profile   = aws_iam_instance_profile.ssm_instance_profile.name
+  subnet_id              = aws_subnet.private2.id
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
 
-    tags = {
-      Name = "Database instance"
-    }
+  tags = {
+    Name = "Database instance"
+  }
 }

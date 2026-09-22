@@ -123,9 +123,12 @@ resource "aws_security_group" "alb_sg" {
   description = "Security group for ALB"
   vpc_id      = aws_vpc.django_app_vpc.id
 
-  # ingress {
-
-  # }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   egress {
     from_port   = 0
@@ -159,9 +162,13 @@ resource "aws_security_group" "app_instance_sg" {
   description = "Security group for ec2 app instance"
   vpc_id      = aws_vpc.django_app_vpc.id
 
-  # ingress {
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
 
-  # }
+  }
 
   egress {
     from_port   = 0
