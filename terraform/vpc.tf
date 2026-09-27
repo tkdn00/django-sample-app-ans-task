@@ -1,5 +1,5 @@
 resource "aws_vpc" "django_app_vpc" {
-  cidr_block = "10.1.0.0/16"
+  cidr_block = var.vpc_cidr
 
   tags = {
     Name = "VPC for django app"
@@ -12,7 +12,7 @@ data "aws_availability_zones" "available_zone" {
 
 resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.django_app_vpc.id
-  cidr_block        = "10.1.10.0/24"
+  cidr_block        = var.public1_cidr
   availability_zone = data.aws_availability_zones.available_zone.names[0]
   tags = {
     Name = "Public subnet 1"
@@ -22,7 +22,7 @@ resource "aws_subnet" "public1" {
 
 resource "aws_subnet" "public2" {
   vpc_id            = aws_vpc.django_app_vpc.id
-  cidr_block        = "10.1.20.0/24"
+  cidr_block        = var.public2_cidr
   availability_zone = data.aws_availability_zones.available_zone.names[1]
   tags = {
     Name = "Public subnet 2"
@@ -32,7 +32,7 @@ resource "aws_subnet" "public2" {
 
 resource "aws_subnet" "private1" {
   vpc_id            = aws_vpc.django_app_vpc.id
-  cidr_block        = "10.1.50.0/24"
+  cidr_block        = var.private1_cidr
   availability_zone = data.aws_availability_zones.available_zone.names[0]
   tags = {
     Name = "Private subnet 1"
@@ -42,7 +42,7 @@ resource "aws_subnet" "private1" {
 
 resource "aws_subnet" "private2" {
   vpc_id            = aws_vpc.django_app_vpc.id
-  cidr_block        = "10.1.60.0/24"
+  cidr_block        = var.private2_cidr
   availability_zone = data.aws_availability_zones.available_zone.names[1]
   tags = {
     Name = "Private subnet 2"

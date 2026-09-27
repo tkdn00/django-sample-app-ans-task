@@ -24,17 +24,19 @@ resource "aws_lb_target_group" "djangoapp-tg" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "instance1" {
+resource "aws_lb_target_group_attachment" "app_attachment" {
+  for_each         = aws_instance.app_instance
   target_group_arn = aws_lb_target_group.djangoapp-tg.arn
-  target_id        = aws_instance.app_instance1.id
+  target_id        = each.value.id
   port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "instance2" {
-  target_group_arn = aws_lb_target_group.djangoapp-tg.arn
-  target_id        = aws_instance.app_instance2.id
-  port             = 80
-}
+# resource "aws_lb_target_group_attachment" "app_attachment2" {
+#     for_each = aws_instance.app_instance
+#   target_group_arn = aws_lb_target_group.djangoapp-tg.arn
+#   target_id        = each.value.id
+#   port             = 80
+# }
 
 resource "aws_lb_listener" "djangoapp_listener" {
   load_balancer_arn = aws_lb.djangoapp_lb.arn
