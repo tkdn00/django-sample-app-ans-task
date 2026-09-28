@@ -1,7 +1,5 @@
-resource "aws_s3_bucket" "playbooks_bucket" {
-  bucket = "s3-for-djanjoapp-playbooks"
-
-  tags = {
-    Name        = "My bucket"
-  }
+resource "aws_ssm_parameter" "djangoapp_db_password" {
+  name  = "/djangoapp/db/password"
+  type  = "SecureString"
+  value = random_password.db_password.result
 }

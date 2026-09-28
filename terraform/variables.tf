@@ -45,3 +45,9 @@ variable "db_instance_type" {
   default = "t3.micro"
 
 }
+
+resource "random_password" "db_password" {
+  length           = 16
+  special = false
+  
+}

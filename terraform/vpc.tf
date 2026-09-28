@@ -144,9 +144,13 @@ resource "aws_security_group" "db_sg" {
   description = "Security group for ec2 instance with DB"
   vpc_id      = aws_vpc.django_app_vpc.id
 
-  # ingress {
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.app_instance_sg.id]
 
-  # }
+  }
 
   egress {
     from_port   = 0

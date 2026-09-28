@@ -54,6 +54,7 @@ resource "aws_instance" "app_instance" {
 
   tags = {
     Name = "App instance ${each.key}"
+    Role = "app"
   }
 }
 
@@ -66,6 +67,7 @@ resource "aws_instance" "db_instance" {
 
   tags = {
     Name = "Database instance"
+    Role = "db"
   }
 }
 
