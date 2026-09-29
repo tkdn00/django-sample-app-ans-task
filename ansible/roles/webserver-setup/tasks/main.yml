@@ -1,0 +1,6 @@
+---
+- name: install Python and other build tools
+  ansible.builtin.import_tasks: python-install.yml
+
+- name: nginx install
+  ansible.builtin.import_tasks: nginx-install.yml

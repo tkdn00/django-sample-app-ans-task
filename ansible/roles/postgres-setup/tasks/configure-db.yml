@@ -51,7 +51,7 @@
     password: "{{ db_password }}"
   become: true
   become_user: postgres
-  # no_log: truex
+  # no_log: true
 
 - name: Create database
   community.postgresql.postgresql_db:

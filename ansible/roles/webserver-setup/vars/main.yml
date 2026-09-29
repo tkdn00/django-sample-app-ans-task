@@ -1,0 +1,12 @@
+---
+webserver_python_packages:
+  - "python{{ webserver_python_version }}"
+  - "python{{ webserver_python_version }}-devel"
+  - "python{{ webserver_python_version }}-pip"
+
+webserver_build_packages:
+  - gcc
+  - git
+  - libcurl-devel
+  - openssl-devel
+  - libpq

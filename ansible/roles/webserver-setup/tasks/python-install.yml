@@ -1,0 +1,10 @@
+---
+- name: Install Python
+  ansible.builtin.dnf:
+    name: "{{ webserver_python_packages }}"
+    state: present
+
+- name: Install build dependencies for Python packages
+  ansible.builtin.dnf:
+    name: "{{ webserver_build_packages }}"
+    state: present

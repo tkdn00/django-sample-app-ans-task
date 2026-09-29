@@ -1,0 +1,8 @@
+---
+- name: Prepare application servers
+  hosts: localhost
+  connection: local
+  become: true
+  force_handlers: true
+  roles:
+    - webserver-setup
