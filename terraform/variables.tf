@@ -47,7 +47,7 @@ variable "db_instance_type" {
 }
 
 resource "random_password" "db_password" {
-  length           = 16
+  length  = 16
   special = false
-  
+
 }
