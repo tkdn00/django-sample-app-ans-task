@@ -1,0 +1,5 @@
+---
+postgres_packages:
+  - postgresql18-server
+  - python3-psycopg2
+  - acl

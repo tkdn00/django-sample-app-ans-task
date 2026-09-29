@@ -1,0 +1,5 @@
+---
+- name: Install PostgreSQL and dependencies
+  ansible.builtin.dnf:
+    name: "{{ postgres_packages }}"
+    state: present

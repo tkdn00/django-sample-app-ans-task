@@ -1,0 +1,8 @@
+---
+
+- name: Configure PostgreSQL server
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - postgres-setup
