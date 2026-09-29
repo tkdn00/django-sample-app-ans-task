@@ -49,7 +49,6 @@
   community.postgresql.postgresql_user:
     name: "{{ db_user }}"
     password: "{{ db_password }}"
-    update_password: on_create
   become: true
   become_user: postgres
   # no_log: truex
