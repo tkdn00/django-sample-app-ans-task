@@ -1,0 +1,62 @@
+---
+- name: Initialize PostgreSQL cluster
+  ansible.builtin.command: postgresql-setup --initdb
+  args:
+    creates: "{{ postgres_data_dir }}/PG_VERSION"
+
+- name: Start and enable PostgreSQL
+  ansible.builtin.systemd:
+    name: "{{ postgres_service }}"
+    state: started
+    enabled: true
+
+- name: Read database settings from Parameter Store
+  ansible.builtin.command: >-
+    aws ssm get-parameter
+    --name {{ postgres_ssm_prefix }}/{{ item }}
+    --with-decryption
+    --region {{ postgres_aws_region }}
+    --query Parameter.Value --output text
+  loop:
+    - name
+    - user
+    - password
+  register: ssm_params
+  changed_when: false
+  no_log: true
+
+- name: Save database settings as facts
+  ansible.builtin.set_fact:
+    db_name: "{{ ssm_params.results[0].stdout }}"
+    db_user: "{{ ssm_params.results[1].stdout }}"
+    db_password: "{{ ssm_params.results[2].stdout }}"
+  no_log: true
+
+- name: Listen on all network interfaces
+  ansible.builtin.lineinfile:
+    path: "{{ postgres_data_dir }}/postgresql.conf"
+    regexp: "^#?listen_addresses"
+    line: "listen_addresses = '*'"
+  notify: Restart PostgreSQL
+
+- name: Allow connections from the VPC
+  ansible.builtin.lineinfile:
+    path: "{{ postgres_data_dir }}/pg_hba.conf"
+    line: "host {{ db_name }} {{ db_user }} {{ postgres_allowed_cidr }} scram-sha-256"
+  notify: Restart PostgreSQL
+
+- name: Create database user
+  community.postgresql.postgresql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    update_password: on_create
+  become: true
+  become_user: postgres
+  no_log: true
+
+- name: Create database
+  community.postgresql.postgresql_db:
+    name: "{{ db_name }}"
+    owner: "{{ db_user }}"
+  become: true
+  become_user: postgres

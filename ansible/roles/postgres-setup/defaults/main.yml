@@ -1,0 +1,4 @@
+---
+postgres_allowed_cidr: "10.1.0.0/16"
+postgres_ssm_prefix: "/djangoapp/db"
+postgres_aws_region: "us-east-1"
