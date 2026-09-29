@@ -46,6 +46,18 @@ variable "db_instance_type" {
 
 }
 
+variable "db_name" {
+  description = "Name of the application database"
+  type        = string
+  default     = "djangoapp"
+}
+
+variable "db_user" {
+  description = "Name of the application database user"
+  type        = string
+  default     = "djangoapp_user"
+}
+
 resource "random_password" "db_password" {
   length  = 16
   special = false

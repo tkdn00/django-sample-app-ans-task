@@ -37,9 +37,12 @@ resource "aws_iam_role_policy" "read_db_params" {
         Action = [
           "ssm:GetParameter",
         ]
-        Effect   = "Allow"
-        Resource = [aws_ssm_parameter.djangoapp_db_password.arn]
-      },
+        Effect = "Allow"
+        Resource = [
+          aws_ssm_parameter.djangoapp_db_password.arn,
+          aws_ssm_parameter.djangoapp_db_name.arn,
+          aws_ssm_parameter.djangoapp_db_user.arn,
+      ] },
     ]
   })
 }

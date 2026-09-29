@@ -52,7 +52,7 @@
     update_password: on_create
   become: true
   become_user: postgres
-  no_log: true
+  # no_log: truex
 
 - name: Create database
   community.postgresql.postgresql_db:

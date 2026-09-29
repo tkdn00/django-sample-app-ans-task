@@ -1,0 +1,11 @@
+[app]
+    i-058831e7906a36e46 private_ip=10.1.50.173
+    i-03f4f95a86302b674 private_ip=10.1.60.221
+
+[db]
+i-0a9f23f44a100e99a private_ip=10.1.60.56
+
+[all:vars]
+aws_region=us-east-1
+db_host=10.1.60.56
+alb_dns=lb-djangoapp-214060501.us-east-1.elb.amazonaws.com
