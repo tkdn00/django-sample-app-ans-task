@@ -15,3 +15,14 @@ resource "aws_ssm_parameter" "djangoapp_db_user" {
   type  = "String"
   value = var.db_user
 }
+
+resource "random_password" "django_secret_key" {
+  length  = 50
+  special = false
+}
+
+resource "aws_ssm_parameter" "django_secret_key" {
+  name  = "/djangoapp/app/secret_key"
+  type  = "SecureString"
+  value = random_password.django_secret_key.result
+}

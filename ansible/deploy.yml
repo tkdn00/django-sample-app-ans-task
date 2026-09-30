@@ -1,0 +1,8 @@
+---
+- name: Deploy Healthchecks application
+  hosts: localhost
+  connection: local
+  become: true
+  force_handlers: true
+  roles:
+    - deploy

@@ -1,0 +1,28 @@
+---
+- name: Create application system user
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    system: true
+    shell: /sbin/nologin
+    create_home: false
+
+- name: Clone application code
+  ansible.builtin.git:
+    repo: "{{ app_repo_url }}"
+    dest: "{{ app_dir }}"
+    version: "{{ app_repo_version }}"
+  notify: Restart application
+
+- name: Install Python requirements into virtualenv
+  ansible.builtin.pip:
+    requirements: "{{ app_dir }}/requirements.txt"
+    virtualenv: "{{ app_venv }}"
+    virtualenv_command: "{{ app_python }} -m venv"
+  notify: Restart application
+
+- name: Install gunicorn into virtualenv
+  ansible.builtin.pip:
+    name: gunicorn
+    virtualenv: "{{ app_venv }}"
+    virtualenv_command: "{{ app_python }} -m venv"
+  notify: Restart application

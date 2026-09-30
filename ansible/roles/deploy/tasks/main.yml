@@ -1,0 +1,7 @@
+---
+- name: Load deployment values
+  ansible.builtin.include_vars:
+    file: "{{ role_path }}/values/main.yml"
+
+- name: Install application code and dependencies
+  ansible.builtin.import_tasks: packages.yml

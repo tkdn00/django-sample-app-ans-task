@@ -1,0 +1,12 @@
+---
+app_user: healthchecks
+app_dir: /opt/healthchecks
+app_venv: "{{ app_dir }}/.venv"
+app_config_dir: /etc/healthchecks
+app_python: python3.12
+
+app_bind: "127.0.0.1:8000"
+app_workers: 2
+
+app_ssm_prefix: "/djangoapp"
+app_aws_region: "us-east-1"
