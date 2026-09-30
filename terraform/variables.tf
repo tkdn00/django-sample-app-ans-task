@@ -63,3 +63,9 @@ resource "random_password" "db_password" {
   special = false
 
 }
+
+variable "github_token" {
+  description = "GitHub token for downloading Ansible playbooks via SSM"
+  type        = string
+  sensitive   = true
+}

@@ -42,7 +42,8 @@ resource "aws_iam_role_policy" "read_db_params" {
           aws_ssm_parameter.djangoapp_db_password.arn,
           aws_ssm_parameter.djangoapp_db_name.arn,
           aws_ssm_parameter.djangoapp_db_user.arn,
-          aws_ssm_parameter.django_secret_key.arn
+          aws_ssm_parameter.django_secret_key.arn,
+          aws_ssm_parameter.github_token.arn
       ] },
     ]
   })

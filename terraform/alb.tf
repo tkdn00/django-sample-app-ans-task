@@ -15,7 +15,7 @@ resource "aws_lb_target_group" "djangoapp-tg" {
   protocol    = "HTTP"
 
   health_check {
-    path                = "/"
+    path                = "/api/v3/status/"
     protocol            = "HTTP"
     port                = 80
     timeout             = 15

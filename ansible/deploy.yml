@@ -1,4 +1,6 @@
 ---
+- ansible.builtin.import_playbook: webservers.yml
+
 - name: Deploy Healthchecks application
   hosts: localhost
   connection: local
