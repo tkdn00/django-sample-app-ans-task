@@ -1,0 +1,42 @@
+---
+- name: Install systemd unit for the application
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/healthchecks.service
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Unit]
+      Description=Healthchecks application (gunicorn)
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      User={{ app_user }}
+      Group={{ app_user }}
+      WorkingDirectory={{ app_dir }}
+      EnvironmentFile={{ app_config_dir }}/app.env
+      ExecStart={{ app_venv }}/bin/gunicorn hc.wsgi:application --bind {{ app_bind }} --workers {{ app_workers }} --access-logfile -
+      Restart=on-failure
+      RestartSec=5
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Restart application
+
+- name: Start and enable the application
+  ansible.builtin.systemd:
+    name: healthchecks
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Install nginx configuration
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "0644"
+    validate: nginx -t -c %s
+  notify: Reload nginx
