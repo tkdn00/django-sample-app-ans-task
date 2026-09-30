@@ -1,0 +1,23 @@
+---
+- name: Apply database migrations
+  ansible.builtin.command:
+    cmd: "{{ app_venv }}/bin/python manage.py migrate --noinput"
+    chdir: "{{ app_dir }}"
+  environment: "{{ app_env }}"
+  register: app_migrate
+  changed_when: "'No migrations to apply' not in app_migrate.stdout"
+
+- name: Collect static files
+  ansible.builtin.command:
+    cmd: "{{ app_venv }}/bin/python manage.py collectstatic --noinput"
+    chdir: "{{ app_dir }}"
+  environment: "{{ app_env }}"
+  register: app_collectstatic
+  changed_when: not (app_collectstatic.stdout is search('^0 static files copied', multiline=True))
+
+- name: Compress CSS and JS bundles
+  ansible.builtin.command:
+    cmd: "{{ app_venv }}/bin/python manage.py compress"
+    chdir: "{{ app_dir }}"
+  environment: "{{ app_env }}"
+  changed_when: false

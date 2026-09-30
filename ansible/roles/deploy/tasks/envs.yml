@@ -1,0 +1,56 @@
+---
+- name: Check that required variables are provided
+  ansible.builtin.assert:
+    that:
+      - db_host is defined
+      - alb_dns is defined
+    fail_msg: "Pass db_host and alb_dns as extra variables (-e)"
+
+- name: Read application settings from Parameter Store
+  ansible.builtin.command: >-
+    aws ssm get-parameter
+    --name {{ app_ssm_prefix }}/{{ item }}
+    --with-decryption
+    --region {{ app_aws_region }}
+    --query Parameter.Value --output text
+  loop:
+    - db/name
+    - db/user
+    - db/password
+    - app/secret_key
+  register: app_ssm_params
+  changed_when: false
+  no_log: true
+
+- name: Build application environment
+  ansible.builtin.set_fact:
+    app_env:
+      DB: postgres
+      DB_HOST: "{{ db_host }}"
+      DB_PORT: "5432"
+      DB_NAME: "{{ app_ssm_params.results[0].stdout }}"
+      DB_USER: "{{ app_ssm_params.results[1].stdout }}"
+      DB_PASSWORD: "{{ app_ssm_params.results[2].stdout }}"
+      SECRET_KEY: "{{ app_ssm_params.results[3].stdout }}"
+      DEBUG: "False"
+      SITE_ROOT: "http://{{ alb_dns }}"
+      ALLOWED_HOSTS: "{{ alb_dns }},{{ ansible_default_ipv4.address }},localhost,127.0.0.1"
+  no_log: true
+
+- name: Create configuration directory
+  ansible.builtin.file:
+    path: "{{ app_config_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Render application environment file
+  ansible.builtin.template:
+    src: app.env.j2
+    dest: "{{ app_config_dir }}/app.env"
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart application
+  no_log: true

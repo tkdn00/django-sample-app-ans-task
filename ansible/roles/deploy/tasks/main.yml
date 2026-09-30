@@ -5,3 +5,12 @@
 
 - name: Install application code and dependencies
   ansible.builtin.import_tasks: packages.yml
+
+- name: Render application configuration
+  ansible.builtin.import_tasks: envs.yml
+
+- name: Run database migrations
+  ansible.builtin.import_tasks: migration.yml
+
+- name: Start application server
+  ansible.builtin.import_tasks: run-server.yml
