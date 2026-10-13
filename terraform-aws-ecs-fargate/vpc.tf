@@ -110,3 +110,18 @@ resource "aws_route_table_association" "public2_rt_association" {
   route_table_id = aws_route_table.public_rt.id
 }
 
+resource "aws_security_group" "db_sg" {
+  name = "db-security-group"
+  vpc_id = aws_vpc.django_app_vpc.id
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # ingress {
+
+  # }
+  
+}

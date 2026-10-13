@@ -27,3 +27,24 @@ variable "private2_cidr" {
   default     = "10.10.60.0/24"
 }
 
+variable "db_engine_version" {
+  type        = string
+  default     = "17"
+}
+
+variable "db_instance_class" {
+  default = "db.t3.micro"
+}
+
+
+variable "db_name" {
+  description = "Name of the application database"
+  type        = string
+  default     = "djangoapp"
+}
+
+variable "db_user" {
+  description = "Name of the application database user"
+  type        = string
+  default     = "djangoapp_user"
+}
