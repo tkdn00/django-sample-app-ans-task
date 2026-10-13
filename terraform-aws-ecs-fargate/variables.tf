@@ -28,8 +28,8 @@ variable "private2_cidr" {
 }
 
 variable "db_engine_version" {
-  type        = string
-  default     = "17"
+  type    = string
+  default = "17"
 }
 
 variable "db_instance_class" {
@@ -47,4 +47,35 @@ variable "db_user" {
   description = "Name of the application database user"
   type        = string
   default     = "djangoapp_user"
+}
+
+variable "cpu_architecture" {
+  description = "CPU architecture of the Fargate task, must match the platform the image was built for (ARM64 or X86_64)"
+  type        = string
+  default     = "ARM64"
+}
+
+variable "image_tag" {
+  description = "Tag of the application image to deploy"
+  type        = string
+  default     = "latest"
+}
+
+variable "task_cpu" {
+  description = "CPU units of the Fargate task"
+  type        = number
+  default     = 512
+}
+
+variable "task_memory" {
+  description = "Memory (MiB) of the Fargate task"
+  type        = number
+  default     = 1024
+}
+
+variable "ecr_repository_name" {
+  description = "Name of repository"
+  type        = string
+  default     = "django-sample-app"
+
 }

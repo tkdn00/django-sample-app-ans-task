@@ -8,7 +8,7 @@ resource "aws_lb" "djangoapp_lb" {
 }
 
 resource "aws_lb_target_group" "djangoapp_tg" {
-  name = "djangoapp-ecs-tg"
+  name                 = "djangoapp-ecs-tg"
   target_type          = "ip"
   vpc_id               = aws_vpc.django_app_vpc.id
   port                 = 8000
