@@ -1,10 +1,10 @@
-
+# git і системне
 .git
 .gitignore
 .DS_Store
 **/.DS_Store
-
-
+ 
+# інфраструктура
 terraform
 terraform-aws-ecs-fargate
 ansible
@@ -13,11 +13,21 @@ ansible
 *.tfstate
 *.tfstate.*
 *.tfvars
-
+ 
+# локальні дані й кеш
 search.db
 *.sqlite
 **/__pycache__
 *.pyc
 .venv
 static-collected
+ 
+# лише для розробки й тестів
+stuff
+hc/**/tests
+hc/test.py
+requirements-dev.txt
+mypy.ini
+ 
 
+ 
