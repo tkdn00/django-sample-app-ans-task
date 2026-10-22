@@ -28,6 +28,7 @@ hc/**/tests
 hc/test.py
 requirements-dev.txt
 mypy.ini
- 
+
+.env
 
  
